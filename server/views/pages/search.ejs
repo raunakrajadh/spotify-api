@@ -1,0 +1,29 @@
+<!-- server/views/pages/search.ejs -->
+<div class="search-container">
+  <form action="/search" method="post">
+    <input type="text" name="query" placeholder="Search for a song" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <% if (data) { %>
+    <ul class="track-list">
+      <% data.forEach(track => { %>
+        <li class="track-item">
+          <p><%= track.name %> by <%= track.artists[0].name %></p>
+          <audio controls>
+            <source src="<%= track.preview_url %>" type="audio/mpeg">
+          </audio>
+          <form action="/download" method="post" class="track-action">
+            <input type="hidden" name="preview_url" value="<%= track.preview_url %>">
+            <input type="hidden" name="name" value="<%= track.name %>">
+            <button type="submit">Download</button>
+          </form>
+          <form action="/delete" method="post" class="track-action">
+            <input type="hidden" name="path" value="path_to_downloaded_file">
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
